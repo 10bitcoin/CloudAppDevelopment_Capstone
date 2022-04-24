@@ -134,7 +134,7 @@ def add_review(request, dealer_id):
     if request.user.is_authenticated:
         # GET request renders the page with the form for filling out a review
         if request.method == "GET":
-            url = f"https://vhui77.us-south.cf.apigw.appdomain.cloud/dealerships/dealer-get?dealerId={dealer_id}"
+            url = f"https://vhui77.us-south.cf.appdomain.cloud/dealerships/dealer-get?dealerId={dealer_id}"
             # Get dealer details from the API
             context = {
                 "cars": CarModel.objects.all(),
