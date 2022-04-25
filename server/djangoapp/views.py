@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 def get_dealerships(request):
     if request.method == "GET":
         context = {}
-        url = "https://vhui77.us-south.cf.apigw.appdomain.cloud/api/dealership"
+        url = "https://6eaebae3.us-south.apigw.appdomain.cloud/api/dealership"
         # Get dealers from the Cloudant DB
         context["dealerships"] = get_dealers_from_cf(url)
 
