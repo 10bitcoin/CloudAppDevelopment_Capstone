@@ -1,6 +1,36 @@
 /**
- * Get all dealerships
- **/
+  * 
+  * main() will be run automatically when this action is invoked in IBM Cloud
+  *
+  * @param Cloud Functions actions accept a single parameter, which must be a JSON object.
+  *        In this case, the param can be an empty JSON object, a JSON object with the key "dealerID" and the 
+  *        id of a dealership as the value, or a JSON object with the key "state" and the name of a state as value. 
+  *        I.e: {} or {"state": "California"} or {"id": "14"}
+  * @return The action returns a JSON object consisting of the HTTP response, i.e:
+  *         {
+  *             "body": {
+  *                 "bookmark": "g1AAAABweJzLYWBgYMpgSmHgKy5JLCrJTq2MT8lPzkzJBYormCamJJuZmxkYplpampumGCWlGBoapZkkJiWmGaYkpxmD9HHA9BGlIwsAxe0fhw",
+                    "docs": [
+                        {
+                            "_id": "5adc67601e9975d2bd112f4abaf0ba06",
+                            "_rev": "1-34e7ebd07643af43db578a46ee1d6365",
+                            "address": "3 Nova Court",
+                            "city": "El Paso",
+                            "full_name": "Holdlamis Car Dealership",
+                            "id": 1,
+                            "lat": 31.6948,
+                            "long": -106.3,
+                            "short_name": "Holdlamis",
+                            "st": "TX",
+                            "state": "Texas",
+                            "zip": "88563"
+                        },
+                        ..., 
+                    ],
+                    ...
+                }
+            }
+**/
 
 function main(params) {
 
