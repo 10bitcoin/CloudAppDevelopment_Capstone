@@ -105,7 +105,7 @@ def registration_request(request):
 def get_dealer_details(request, dealer_id):
     context = {}
     if request.method == "GET":
-        url = "https://vhui77.us-south.cf.apigw.appdomain.cloud/api/dealership?state=" ""
+        url = "https://6eaebae3.us-south.apigw.appdomain.cloud/api/dealership?state=" ""
         reviews = get_dealer_reviews_from_cf(url, dealer_id=dealer_id)
         context = {
             "reviews":  reviews, 
