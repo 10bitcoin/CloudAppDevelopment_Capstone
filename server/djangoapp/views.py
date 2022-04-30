@@ -107,6 +107,7 @@ def get_dealer_details(request, dealer_id):
     if request.method == "GET":
         url = 'https://9130179c.us-south.apigw.appdomain.cloud/api2/getreviews'
         reviews = get_dealer_reviews_from_cf(url, dealer_id=dealer_id)
+        print(reviews)
         context = {
             "reviews":  reviews, 
             "dealer_id": dealer_id

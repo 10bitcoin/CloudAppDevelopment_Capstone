@@ -76,11 +76,13 @@ def get_dealer_by_id(url, dealer_id):
 
     # Create a CarDealer object from response
     dealer = json_result["entries"][0]
+   
     dealer_obj = CarDealer(address=dealer["address"], city=dealer["city"], full_name=dealer["full_name"],
                            id=dealer["id"], lat=dealer["lat"], long=dealer["long"],
                            short_name=dealer["short_name"],
                            st=dealer["st"], state=dealer["state"], zip=dealer["zip"])
-
+                          
+   
     return dealer_obj
 
 
@@ -146,7 +148,7 @@ def get_dealer_reviews_from_cf(url, dealer_id):
   #          print(f"sentiment: {review_obj.sentiment}")
 
             # Saving the review object to the list of results
-   #         results.append(review_obj)
+            results.append(review_obj)
 
     return results
 
