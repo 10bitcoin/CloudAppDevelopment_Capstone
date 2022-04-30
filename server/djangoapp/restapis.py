@@ -206,7 +206,7 @@ def analyze_review_sentiments(review_text):
         print("Review is too short for sentiment analysis. Assigning default sentiment value 'neutral' instead")
         sentiment_label = "neutral"
 
-    print(sentiment_score)
+    #print(sentiment_score)
     print(sentiment_label)
 
     return sentiment_label
