@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import CarModel 
+from .models import CarModel, CarMake, CarDealer, DealerReview
 from .restapis import get_dealer_by_id, get_dealers_from_cf, get_dealers_by_state, get_dealer_reviews_from_cf, post_request
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -134,18 +134,27 @@ def add_review(request, dealer_id):
         # POST request posts the content in the review submission form to the Cloudant DB using the post_review Cloud Function
         if request.method == "POST":
             form = request.POST
+            print(request.POST)
             review = dict()
             review["name"] = f"{request.user.first_name} {request.user.last_name}"
             review["dealership"] = dealer_id
+        
             review["review"] = form["content"]
+            
             review["purchase"] = form.get("purchasecheck")
             if review["purchase"]:
                 review["purchase_date"] = datetime.strptime(form.get("purchasedate"), "%m/%d/%Y").isoformat()
-            car = CarModel.objects.get(pk=form["car"])
+           
+            car_id = request.POST["car"]
+            car = CarModel.objects.get(pk=car_id)
+            #car = CarModel.objects.get(pk=form["car"])
+            
             review["car_make"] = car.car_make.name
             review["car_model"] = car.name
             review["car_year"] = car.year
-            
+            print(review)
+           
+           
             # If the user bought the car, get the purchase date
             if form.get("purchasecheck"):
                 review["purchase_date"] = datetime.strptime(form.get("purchasedate"), "%m/%d/%Y").isoformat()
@@ -154,7 +163,7 @@ def add_review(request, dealer_id):
 
             url = "https://9130179c.us-south.apigw.appdomain.cloud/api3/postreviews"  # API Cloud Function route
             json_payload = {"review": review}  # Create a JSON payload that contains the review data
-
+            
             # Performing a POST request with the review
             result = post_request(url, json_payload, dealerId=dealer_id)
             if int(result.status_code) == 200:
