@@ -1,7 +1,9 @@
 import datetime
 from django.db import models
 from django.utils.timezone import now
-
+from django.core import serializers 
+import uuid
+import json
 
 # Car Make model
 class CarMake(models.Model):
@@ -17,7 +19,8 @@ class CarMake(models.Model):
 class CarModel(models.Model):
     car_make = models.ForeignKey(CarMake, null=True, on_delete=models.CASCADE)
     name = models.CharField(null=False, max_length=50)
-    dealer_id = models.IntegerField(null=True)
+    #dealer_id = models.IntegerField(null=True)
+    dealer_id = models.IntegerField(default=1,primary_key=True)
 
     SEDAN = "Sedan"
     SUV = "SUV"

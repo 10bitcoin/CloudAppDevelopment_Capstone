@@ -122,7 +122,7 @@ def add_review(request, dealer_id):
     if request.user.is_authenticated:
         # GET request renders the page with the form for filling out a review
         if request.method == "GET":
-            #url = f"https://9130179c.us-south.apigw.appdomain.cloud/dealerships/dealer-get?dealerId={dealer_id}"
+            
             url = "https://9130179c.us-south.apigw.appdomain.cloud/api/getdealerships"
             # Get dealer details from the API
             context = {
