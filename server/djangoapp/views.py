@@ -107,7 +107,7 @@ def get_dealer_details(request, dealer_id):
     if request.method == "GET":
         url = 'https://9130179c.us-south.apigw.appdomain.cloud/api2/getreviews'
         reviews = get_dealer_reviews_from_cf(url, dealer_id=dealer_id)
-        print(reviews)
+        #print(reviews)
         context = {
             "reviews":  reviews, 
             "dealer_id": dealer_id
@@ -118,6 +118,7 @@ def get_dealer_details(request, dealer_id):
 
 # View to submit a new review
 def add_review(request, dealer_id):
+    
     # User must be logged in before posting a review
     if request.user.is_authenticated:
         # GET request renders the page with the form for filling out a review
@@ -128,13 +129,14 @@ def add_review(request, dealer_id):
             context = {
                 "cars": CarModel.objects.all(),
                 "dealer": get_dealer_by_id(url, dealer_id=dealer_id),
-            }
+                }
+            
             return render(request, 'djangoapp/add_review.html', context)
            
         # POST request posts the content in the review submission form to the Cloudant DB using the post_review Cloud Function
         if request.method == "POST":
             form = request.POST
-            print(request.POST)
+            print(form)
             review = dict()
             review["name"] = f"{request.user.first_name} {request.user.last_name}"
             review["dealership"] = dealer_id
@@ -145,15 +147,12 @@ def add_review(request, dealer_id):
             if review["purchase"]:
                 review["purchase_date"] = datetime.strptime(form.get("purchasedate"), "%m/%d/%Y").isoformat()
            
-            car_id = request.POST["car"]
-            car = CarModel.objects.get(pk=car_id)
-            #car = CarModel.objects.get(pk=form["car"])
+            car = CarModel.objects.get(pk=form["car"])
             
             review["car_make"] = car.car_make.name
             review["car_model"] = car.name
             review["car_year"] = car.year
-            print(review)
-           
+                      
            
             # If the user bought the car, get the purchase date
             if form.get("purchasecheck"):

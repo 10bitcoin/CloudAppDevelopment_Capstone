@@ -75,7 +75,7 @@ def get_dealers_from_cf(url):
 def get_dealer_by_id(url, dealer_id):
     # Call get_request with the dealer_id param
     json_result = get_request(url, dealerId=dealer_id)
-    print(json_result)
+    #print(json_result)
 
     # Create a CarDealer object from response
     dealers = json_result["body"]
