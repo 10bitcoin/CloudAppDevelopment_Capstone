@@ -76,16 +76,22 @@ def get_dealers_from_cf(url):
 def get_dealer_by_id(url, dealer_id):
     # Call get_request with the dealer_id param
     json_result = get_request(url, dealerId=dealer_id)
+    print(json_result)
 
     # Create a CarDealer object from response
-    dealer = json_result["entries"][0]
-   
-    dealer_obj = CarDealer(address=dealer["address"], city=dealer["city"], full_name=dealer["full_name"],
-                           id=dealer["id"], lat=dealer["lat"], long=dealer["long"],
-                           short_name=dealer["short_name"],
-                           st=dealer["st"], state=dealer["state"], zip=dealer["zip"])
+    dealers = json_result["body"]
+
+    dealer_doc = dealers["docs"][0]
+    #dealer_obj = CarDealer(address=dealer["address"], city=dealer["city"], full_name=dealer["full_name"],
+    #                       id=dealer["id"], lat=dealer["lat"], long=dealer["long"],
+    #                       short_name=dealer["short_name"],
+    #                       st=dealer["st"], state=dealer["state"], zip=dealer["zip"])
                           
-   
+    dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
+                    id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"], 
+                    short_name=dealer_doc["short_name"],     
+                    st=dealer_doc["st"], state=dealer_doc["state"], zip=dealer_doc["zip"])
+    #   results.append(dealer_obj)
     return dealer_obj
 
 
@@ -95,6 +101,7 @@ def get_dealers_by_state(url, state):
     # Call get_request with the state param
     json_result = get_request(url, state=state)
     dealers = json_result["body"]["docs"]
+    
     # For each dealer in the response
     for dealer in dealers:
         # Create a CarDealer object with values in `doc` object
