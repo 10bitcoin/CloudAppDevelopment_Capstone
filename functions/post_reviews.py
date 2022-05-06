@@ -1,6 +1,9 @@
-import sys
-from ibmcloudant.cloudant_v1 import CloudantV1
-from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+# IBM Cloud-specific imports
+from cloudant.client import Cloudant
+from cloudant.error import CloudantException
+
+
+# main() will be run automatically when this action is invoked in IBM Cloud
 def main(dict):
     """
     Posts a review to the external Cloudant database
@@ -26,19 +29,35 @@ def main(dict):
     :return: The action returns a JSON object consisting of the HTTP response, which should contain a success message with code 200
              or an error message with code 500.
     """
-    authenticator = IAMAuthenticator('8VxodD5ZTFn7y1yUSOF8XWm3Q3MjTQU4vfrUSXNlnWL-')
-    service = CloudantV1(authenticator=authenticator)
-    service.set_service_url("https://e33765a3-37fa-4f08-8109-03a9a2aa591b-bluemix.cloudantnosqldb.appdomain.cloud")
-    response = service.post_document(db='reviews', document=dict["review"]).get_result()
-    try:
-    # result_by_filter=my_database.get_query_result(selector,raw_result=True)
-        result= {
-        'headers': {'Content-Type':'application/json'},
-        'body': {'data':response}
+    
+    secret = {
+        "URL": "https://e33765a3-37fa-4f08-8109-03a9a2aa591b-bluemix.cloudantnosqldb.appdomain.cloud",
+        "IAM_API_KEY": "8VxodD5ZTFn7y1yUSOF8XWm3Q3MjTQU4vfrUSXNlnWL-",
+        "ACCOUNT_NAME": "e33765a3-37fa-4f08-8109-03a9a2aa591b-bluemix",
+    }
+
+    client = Cloudant.iam(
+        account_name=secret["ACCOUNT_NAME"], 
+        api_key=secret["IAM_API_KEY"],
+        url=secret["URL"],
+        connect=True, 
+    )
+    
+    db = client["reviews"]
+    new_review = db.create_document(dict["review"])   
+    
+    if new_review.exists():
+        result = {
+            "headers": {"Content-Type": "application/json"},
+            "body": {"message": "Review posted successfully."}
         }
+    
+        print(new_review)
         return result
-    except:
-        return {
-        'statusCode': 404,
-        'message': 'Something went wrong'
+        
+    else: 
+        error_json = {
+            "statusCode": 500,
+            "message": "Could not post review due to server error."
         }
+        return error_json
